@@ -6,12 +6,12 @@ import axios from 'axios';
 const Unidades = () => {
   const [unidades, setUnidades] = useState([]);
   const [newUnidad, setNewUnidad] = useState({
-    piso: 0,
-    numeroUnidad: 0,
+    piso: 186,
+    numeroUnidad: 987,
     habitada: false,
     alquilada: false,
-    edificio_id: 2, // Set the appropriate edificio ID
-    usuario_id: 1, // Set the appropriate usuario ID
+    edificio: 2, 
+    usuario: 1, 
   });
 
   // Fetch all units
@@ -22,20 +22,29 @@ const Unidades = () => {
   }, []);
 
   // Save a new unit
-  const saveUnidad = () => {
-    axios.post('http://localhost:8080/sistema/unidades', newUnidad)
+  const saveUnidad =  async () => {
+    try { 
+      const response= await axios.post('http://localhost:8080/sistema/unidades',newUnidad)
+      console.log(response.data)
+    }
+    catch(error){
+      console.error('Errorr',error);
+    }
+   
+
+  /*  axios.post('http://localhost:8080/sistema/unidades', JSON.stringify(newUnidad))
       .then(response => {
         setUnidades([...unidades, response.data]);
         setNewUnidad({
-          piso: 0,
-          numeroUnidad: 0,
+          piso: 3,
+          numeroUnidad: 3,
           habitada: false,
           alquilada: false,
-          edificio_id: 2, 
-          usuario_id: 1, 
+          edificio: 2, 
+          usuario: 1, 
         });
       })
-      .catch(error => console.error('Error saving unit:', error));
+ */     //.catch(error => console.error('Error saving unit:', error));
   };
 
   // Delete a unit

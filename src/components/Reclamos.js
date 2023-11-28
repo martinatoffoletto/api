@@ -4,14 +4,10 @@ import axios from 'axios';
 const Reclamos = () => {
   const [reclamos, setReclamos] = useState([]);
   const [newReclamo, setNewReclamo] = useState({
-    numero:"",
-    id_unidad:"", 
-    descripcion:"", 
-    estado:"", 
-    usuario_id:"",
-    medidas_tomadas:""
-  
-   
+    unidad:3,
+    descripcion:"reclamo agua corriente",
+    estado:"ABIERTO",
+    usuario:1
   });
 
   useEffect(() => {
@@ -28,33 +24,42 @@ const Reclamos = () => {
     }
   };
 
+  
+
   const saveReclamo = async () => {
     try {
-      const response = await axios.post('http://localhost:8080/sistema/reclamos', {
+      const response= await axios.post('http://localhost:8080/sistema/reclamos',newReclamo)
+      console.log(response.data)
+      /*const response = await axios.post('http://localhost:8080/sistema/reclamos', {
+        numero: newReclamo.numero,
         areaComun: newReclamo.id_unidad,
         descripcion: newReclamo.descripcion,
         estado: newReclamo.estado,
         usuario: newReclamo.usuario_id,
-        // Add other properties as needed
+        medidas_tomadas: newReclamo.medidas_tomadas
       });
+      
   
       setReclamos([...reclamos, response.data]);
       setNewReclamo({
-        numero: "",
-        id_unidad: "",
-        descripcion: "",
-        estado: "",
-        usuario_id: "",
-        medidas_tomadas: "",
+        numero:"12",
+        id_unidad:"1", 
+        descripcion:"", 
+        estado:"TERMINADO", 
+        usuario_id:"",
+        medidas_tomadas:""
       });
+      */
     } catch (error) {
+      console.log(JSON.stringify(newReclamo))
       console.error('Error saving reclamo:', error);
     }
+    
   };
 
   const deleteReclamo = async (id) => {
     try {
-      // Adjust the URL according to your API
+      
       await axios.delete(`http://localhost:8080/sistema/reclamos/${id}`);
       // Update the state by removing the deleted reclamo
       setReclamos(reclamos.filter((reclamo) => reclamo.id !== id));
