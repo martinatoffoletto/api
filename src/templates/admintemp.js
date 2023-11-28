@@ -2,7 +2,7 @@ import React from "react";
 import SwitchAdmin from "../components/SwitchAdmin"
 
 
-const AdminTemplate = ({ children }) => {
+const AdminTemplate = ()=> {
     return (
       <>
         <div>

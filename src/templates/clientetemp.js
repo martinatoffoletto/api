@@ -1,14 +1,15 @@
 import React from "react";
+import GuardarAreaComunComponent from "../components/saveAC";
+import AreasComunesComponent from "../components/showAC"
 
-
-const ClienteTemplate = ({ children }) => {
+const ClienteTemplate = ()=> {
     return (
-      <>
-        <div>
-          <h2>nav</h2>
-        </div>
+      <div>
+          <GuardarAreaComunComponent/>
+          <AreasComunesComponent/>
 
-      </>
+      </div>
+      
     );
   };
   

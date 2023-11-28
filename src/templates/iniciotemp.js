@@ -1,7 +1,7 @@
 import React from "react";
 import SwitchButton from '../components/Switch';
 
-const InicioTemplate = ({ children }) => {
+const InicioTemplate = ()=> {
     return (
       <>
         <div>
