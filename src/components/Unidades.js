@@ -61,13 +61,55 @@ const Unidades = () => {
             ))}
           </ul>
         </div>
-        <h2>Add New Unit</h2>
-        <label>Piso: <input type="number" value={newUnidad.piso} onChange={(e) => setNewUnidad({ ...newUnidad, piso: e.target.value })} /></label>
-        <label>Numero de Unidad: <input type="number" value={newUnidad.numeroUnidad} onChange={(e) => setNewUnidad({ ...newUnidad, numeroUnidad: e.target.value })} /></label>
-        <label>Habitada: <input type="checkbox" checked={newUnidad.habitada} onChange={(e) => setNewUnidad({ ...newUnidad, habitada: e.target.checked })} /></label>
-        <label>Alquilada: <input type="checkbox" checked={newUnidad.alquilada} onChange={(e) => setNewUnidad({ ...newUnidad, alquilada: e.target.checked })} /></label>
-        <button onClick={saveUnidad}>Save</button>
+       
+        <h2 className="display-4 mb-4">Agregar Nueva Unidad</h2>
+        <div className="mb-3">
+          <label className="form-label">Piso:</label>
+          <input
+            className="form-control"
+            type="number"
+            value={newUnidad.piso}
+            onChange={(e) => setNewUnidad({ ...newUnidad, piso: e.target.value })}
+          />
+        </div>
+
+          <div className="mb-3">
+            <label className="form-label">Número de Unidad:</label>
+            <input
+              className="form-control"
+              type="number"
+              value={newUnidad.numeroUnidad}
+              onChange={(e) => setNewUnidad({ ...newUnidad, numeroUnidad: e.target.value })}
+            />
+          </div>
+
+          <div className="mb-3">
+            <label className="form-label">Habitada:</label>
+            <input
+              className="form-control"
+              type="checkbox"
+              checked={newUnidad.habitada}
+              onChange={(e) => setNewUnidad({ ...newUnidad, habitada: e.target.checked })}
+            />
+          </div>
+
+          <div className="mb-3">
+            <label className="form-label">Alquilada:</label>
+            <input
+              className="form-control"
+              type="checkbox"
+              checked={newUnidad.alquilada}
+              onChange={(e) => setNewUnidad({ ...newUnidad, alquilada: e.target.checked })}
+            />
+          </div>
+
+          <button className="btn btn-primary" onClick={saveUnidad}>
+            Guardar
+          </button>
       </section>
+
+
+      
 
 
       

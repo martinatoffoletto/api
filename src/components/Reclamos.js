@@ -64,7 +64,7 @@ const Reclamos = () => {
   };
 
   return (
-    <div>
+    
       <section className="container mt-4">
         <div className="container mt-4">
           <h1 className="display-4">Reclamos</h1>
@@ -79,49 +79,85 @@ const Reclamos = () => {
             ))}
           </ul>
         </div>
-      </section>
+        <div className="mb-3">
+  <section className="container">
+    <h2 className="display-4 mb-4">Agregar Nuevo Reclamo</h2>
 
-      <div>
+    <div className="mb-3">
+      <label className="form-label">Numero:</label>
       <input
- type="text"
- placeholder="Numero"
- value={newReclamo.numero}
- onChange={(e) => setNewReclamo({ ...newReclamo, numero: e.target.value })}
-/>
-<input
- type="text"
- placeholder="Id Unidad"
- value={newReclamo.id_unidad}
- onChange={(e) => setNewReclamo({ ...newReclamo, id_unidad: e.target.value })}
-/>
-<input
- type="text"
- placeholder="Descripcion"
- value={newReclamo.descripcion}
- onChange={(e) => setNewReclamo({ ...newReclamo, descripcion: e.target.value })}
-/>
-<input
- type="text"
- placeholder="Estado"
- value={newReclamo.estado}
- onChange={(e) => setNewReclamo({ ...newReclamo, estado: e.target.value })}
-/>
-<input
-  type="text"
-  placeholder="Usuario"
-  value={newReclamo.usuario_id}  // Corrected to use `usuario_id`
-  onChange={(e) => setNewReclamo({ ...newReclamo, usuario_id: e.target.value })}
-/>
-
-<input
- type="text"
- placeholder="Medidas Tomadas"
- value={newReclamo.medidas_tomadas}
- onChange={(e) => setNewReclamo({ ...newReclamo, medidas_tomadas: e.target.value })}
-/>
-        <button onClick={saveReclamo}>Save Reclamo</button>
-      </div>
+        className="form-control"
+        type="text"
+        placeholder="Numero"
+        value={newReclamo.numero}
+        onChange={(e) => setNewReclamo({ ...newReclamo, numero: e.target.value })}
+      />
     </div>
+
+    <div className="mb-3">
+      <label className="form-label">Id Unidad:</label>
+      <input
+        className="form-control"
+        type="text"
+        placeholder="Id Unidad"
+        value={newReclamo.id_unidad}
+        onChange={(e) => setNewReclamo({ ...newReclamo, id_unidad: e.target.value })}
+      />
+    </div>
+
+    <div className="mb-3">
+      <label className="form-label">Descripcion:</label>
+      <input
+        className="form-control"
+        type="text"
+        placeholder="Descripcion"
+        value={newReclamo.descripcion}
+        onChange={(e) => setNewReclamo({ ...newReclamo, descripcion: e.target.value })}
+      />
+    </div>
+
+    <div className="mb-3">
+      <label className="form-label">Estado:</label>
+      <input
+        className="form-control"
+        type="text"
+        placeholder="Estado"
+        value={newReclamo.estado}
+        onChange={(e) => setNewReclamo({ ...newReclamo, estado: e.target.value })}
+      />
+    </div>
+
+    <div className="mb-3">
+      <label className="form-label">Usuario:</label>
+      <input
+        className="form-control"
+        type="text"
+        placeholder="Usuario"
+        value={newReclamo.usuario_id}
+        onChange={(e) => setNewReclamo({ ...newReclamo, usuario_id: e.target.value })}
+      />
+    </div>
+
+    <div className="mb-3">
+      <label className="form-label">Medidas Tomadas:</label>
+      <input
+        className="form-control"
+        type="text"
+        placeholder="Medidas Tomadas"
+        value={newReclamo.medidas_tomadas}
+        onChange={(e) => setNewReclamo({ ...newReclamo, medidas_tomadas: e.target.value })}
+      />
+    </div>
+
+    <button className="btn btn-primary" onClick={saveReclamo}>
+      Guardar Reclamo
+    </button>
+  </section>
+</div>
+
+      </section>
+    
+    
   );
 };
 
