@@ -17,52 +17,38 @@ const AreasComunesComponent = () => {
     fetchData();
   }, []);
 
-  return (
-    <div>
-      <h1>Áreas Comunes</h1>
-      <ul>
-        {areasComunes.map((area) => (
-          <li key={area.id}>{area.nombre}</li>
-        ))}
-      </ul>
-    </div>
-  );
-};
-
-const UpdateAreaComunComponent = () => {
-  const [id, setId] = useState('');
-  const [nombre, setNombre] = useState('');
-  const [descripcion, setDescripcion] = useState('');
-
-  const handleUpdate = async () => {
+  const handleDelete = async (areaId) => {
     try {
-      console.log('Updating Area Comun with ID:', id);
-      console.log('New Nombre:', nombre);
-
-      const response = await axios.put(
-        `http://localhost:8080/sistema/areasComunes/${id}`,
-        { nombre, descripcion }
-      );
-
-      console.log('Area Comun actualizada:', response.data);
+      const response = await axios.delete(`http://localhost:8080/sistema/areasComunes/${areaId}`);
+      console.log(response.data);
+      // After deletion, update the state to reflect the changes
+      setAreasComunes(areasComunes.filter((area) => area.id !== areaId));
     } catch (error) {
-      console.error('Error al actualizar el área común:', error);
+      console.error('Error deleting Area Comun:', error);
     }
   };
 
   return (
-    <div>
-      <h2>Actualizar Área Común</h2>
-      <label>ID:</label>
-      <input type="text" value={id} onChange={(e) => setId(e.target.value)} />
-      <label>Nuevo Nombre:</label>
-      <input type="text" value={nombre} onChange={(e) => setNombre(e.target.value)} />
-      <label>Nueva Descripción:</label>
-      <input type="text" value={descripcion} onChange={(e) => setDescripcion(e.target.value)} />
-      <button onClick={handleUpdate}>Actualizar</button>
+    <section className="container mt-4">
+    <div className="container mt-4">
+      <h1 className="display-4">Áreas Comunes</h1>
+      <ul className="list-group">
+        {areasComunes.map((area) => (
+          <li key={area.id} className="list-group-item d-flex justify-content-between align-items-center">
+            {area.nombre}  -- {area.descripcion}
+            
+            <button className="btn btn-danger" onClick={() => handleDelete(area.id)}>
+              Eliminar
+            </button>
+          </li>
+        ))}
+      </ul>
     </div>
+    </section>
+
   );
 };
+
 
 const GuardarAreaComunComponent = () => {
   const [nombre, setNombre] = useState('');
@@ -82,52 +68,45 @@ const GuardarAreaComunComponent = () => {
   };
 
   return (
-    <div>
-      <h2>Guardar Área Común</h2>
-      <label>Nombre:</label>
-      <input type="text" value={nombre} onChange={(e) => setNombre(e.target.value)} />
-      <label>Descripción:</label>
-      <input type="text" value={descripcion} onChange={(e) => setDescripcion(e.target.value)} />
-      <label>Edificio ID:</label>
-      <input type="text" value={edificioId} onChange={(e) => setEdificioId(e.target.value)} />
-      <button onClick={handleGuardar}>Guardar</button>
+    <div className="mb-3">
+      <section className="container">
+        <h2 className="display-4 mb-4">Guardar Área Común</h2>
+        
+        <div className="mb-3">
+          <label className="form-label">Nombre:</label>
+          <input className="form-control" type="text" value={nombre} onChange={(e) => setNombre(e.target.value)} />
+        </div>
+        
+        <div className="mb-3">
+          <label className="form-label">Descripción:</label>
+          <input className="form-control" type="text" value={descripcion} onChange={(e) => setDescripcion(e.target.value)} />
+        </div>
+        
+        <div className="mb-3">
+          <label className="form-label">Edificio ID:</label>
+          <input className="form-control" type="text" value={edificioId} onChange={(e) => setEdificioId(e.target.value)} />
+        </div>
+        
+        <button className="btn btn-primary" onClick={handleGuardar}>
+          Guardar
+        </button>
+      </section>
     </div>
+
   );
 };
 
-const DeleteAreaComun = () => {
-  const [areaComunId, setAreaComunId] = useState('');
 
-  const handleDelete = async () => {
-    try {
-      const response = await axios.delete(`http://localhost:8080/sistema/areasComunes/${areaComunId}`);
-      console.log(response.data);
-    } catch (error) {
-      console.error('Error deleting Area Comun:', error);
-    }
-  };
-
-  return (
-    <div>
-      <h2>Eliminar Área Común</h2>
-      <label>Area Comun ID:</label>
-      <input type="text" value={areaComunId} onChange={(e) => setAreaComunId(e.target.value)} />
-      <button onClick={handleDelete}>Eliminar Área Común</button>
-    </div>
-  );
-};
 
 const AreaComun = () => {
   return (
-    <div>
-      <AreasComunesComponent />
-      <hr />
-      <UpdateAreaComunComponent />
-      <hr />
-      <GuardarAreaComunComponent />
-      <hr />
-      <DeleteAreaComun />
-    </div>
+    <section className="container">
+      <div className="mb-3">
+        <AreasComunesComponent />
+        <hr />
+        <GuardarAreaComunComponent />
+      </div>
+    </section>
   );
 };
 

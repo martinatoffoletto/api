@@ -1,6 +1,6 @@
 // Unidades.js
 
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
 const Unidades = () => {
@@ -10,97 +10,68 @@ const Unidades = () => {
     numeroUnidad: 0,
     habitada: false,
     alquilada: false,
-    edificio1: 0, // ID del edificio
-    usuario1: 0, // ID del usuario
+    edificio_id: 2, // Set the appropriate edificio ID
+    usuario_id: 1, // Set the appropriate usuario ID
   });
 
+  // Fetch all units
   useEffect(() => {
-    // Obtener todas las unidades al cargar el componente
     axios.get('http://localhost:8080/sistema/unidades')
-      .then(response => {
-        setUnidades(response.data);
-      })
-      .catch(error => {
-        console.error('Error al obtener las unidades:', error);
-      });
+      .then(response => setUnidades(response.data))
+      .catch(error => console.error('Error fetching units:', error));
   }, []);
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setNewUnidad({
-      ...newUnidad,
-      [name]: value,
-    });
-  };
-
-  const handleGuardarUnidad = () => {
+  // Save a new unit
+  const saveUnidad = () => {
     axios.post('http://localhost:8080/sistema/unidades', newUnidad)
       .then(response => {
         setUnidades([...unidades, response.data]);
-        // Limpiar el formulario después de guardar
         setNewUnidad({
           piso: 0,
           numeroUnidad: 0,
           habitada: false,
           alquilada: false,
-          edificio1: 0,
-          usuario1: 0,
+          edificio_id: 2, 
+          usuario_id: 1, 
         });
       })
-      .catch(error => {
-        console.error('Error al guardar la unidad:', error);
-      });
+      .catch(error => console.error('Error saving unit:', error));
   };
 
-  const handleBorrarUnidad = (id) => {
+  // Delete a unit
+  const deleteUnidad = (id) => {
     axios.delete(`http://localhost:8080/sistema/unidades/${id}/borrar`)
-      .then(() => {
-        setUnidades(unidades.filter(unidad => unidad.id !== id));
-      })
-      .catch(error => {
-        console.error('Error al borrar la unidad:', error);
-      });
+      .then(() => setUnidades(unidades.filter(u => u.id !== id)))
+      .catch(error => console.error('Error deleting unit:', error));
   };
 
   return (
-    <div>
-      <h1>Lista de Unidades</h1>
-      <ul>
-        {unidades.map(unidad => (
-          <li key={unidad.id}>
-            {unidad.piso} - {unidad.numeroUnidad}
-            <button onClick={() => handleBorrarUnidad(unidad.id)}>Borrar</button>
-          </li>
-        ))}
-      </ul>
+    
+      <section className="container mt-4">
+        <div className="container mt-4">
+          <h1 className="display-4">Unidades</h1>
+          <ul className="list-group">
+            {unidades.map((unidad) => (
+              <li key={unidad.id} className="list-group-item d-flex justify-content-between align-items-center">
+                {`${unidad.piso}, ${unidad.numeroUnidad} - ${unidad.habitada ? 'Habitada' : 'No habitada'}, ${unidad.alquilada ? 'Alquilada' : 'No alquilada'}`}
+                <button className="btn btn-danger" onClick={() => deleteUnidad(unidad.id)}>
+                  Eliminar
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <h2>Add New Unit</h2>
+        <label>Piso: <input type="number" value={newUnidad.piso} onChange={(e) => setNewUnidad({ ...newUnidad, piso: e.target.value })} /></label>
+        <label>Numero de Unidad: <input type="number" value={newUnidad.numeroUnidad} onChange={(e) => setNewUnidad({ ...newUnidad, numeroUnidad: e.target.value })} /></label>
+        <label>Habitada: <input type="checkbox" checked={newUnidad.habitada} onChange={(e) => setNewUnidad({ ...newUnidad, habitada: e.target.checked })} /></label>
+        <label>Alquilada: <input type="checkbox" checked={newUnidad.alquilada} onChange={(e) => setNewUnidad({ ...newUnidad, alquilada: e.target.checked })} /></label>
+        <button onClick={saveUnidad}>Save</button>
+      </section>
 
-      <h2>Agregar Nueva Unidad</h2>
-      <div>
-        <label>Piso: </label>
-        <input type="number" name="piso" value={newUnidad.piso} onChange={handleInputChange} />
-      </div>
-      <div>
-        <label>Número de Unidad: </label>
-        <input type="number" name="numeroUnidad" value={newUnidad.numeroUnidad} onChange={handleInputChange} />
-      </div>
-      <div>
-        <label>Habitada: </label>
-        <input type="checkbox" name="habitada" checked={newUnidad.habitada} onChange={handleInputChange} />
-      </div>
-      <div>
-        <label>Alquilada: </label>
-        <input type="checkbox" name="alquilada" checked={newUnidad.alquilada} onChange={handleInputChange} />
-      </div>
-      <div>
-        <label>Edificio ID: </label>
-        <input type="number" name="edificio1" value={newUnidad.edificio1} onChange={handleInputChange} />
-      </div>
-      <div>
-        <label>Usuario ID: </label>
-        <input type="number" name="usuario1" value={newUnidad.usuario1} onChange={handleInputChange} />
-      </div>
-      <button onClick={handleGuardarUnidad}>Guardar Unidad</button>
-    </div>
+
+      
+    
   );
 };
 

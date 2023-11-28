@@ -3,6 +3,7 @@ import axios from 'axios';
 
 const Edificios = () => {
   const [edificios, setEdificios] = useState([]);
+  const [newDireccion, setNewDireccion] = useState('');
 
   useEffect(() => {
     // Fetch all edificios when the component mounts
@@ -28,31 +29,57 @@ const Edificios = () => {
     }
   };
 
-  const updateEdificio = async (id, updatedEdificio) => {
+  const saveEdificio = async () => {
     try {
-      const response = await axios.put(`http://localhost:8080/sistema/edificios/${id}`, updatedEdificio);
-      // Update the state with the updated edificio
-      setEdificios(edificios.map(edificio => (edificio.id === id ? response.data : edificio)));
+      const response = await axios.post('http://localhost:8080/sistema/edificios', {
+        direccion: newDireccion,
+      });
+
+      if (response.status === 201) {
+        // Update the state with the new building
+        setEdificios(prevEdificios => [...prevEdificios, response.data]);
+        setNewDireccion('');
+      } else {
+        console.error('Error saving edificio. Unexpected status:', response.status);
+      }
     } catch (error) {
-      console.error('Error updating edificio:', error);
+      console.error('Error saving edificio:', error.message);
     }
   };
+  
+  
 
   return (
-    <div>
-      <h2>List of Edificios</h2>
-      <ul>
-        {edificios.map(edificio => (
-          <li key={edificio.id}>
-            {edificio.direccion}
-            <button onClick={() => deleteEdificio(edificio.id)}>Delete</button>
-            <button onClick={() => updateEdificio(edificio.id, { direccion: 'New Address' })}>
-              Update
-            </button>
+    <section className="container mt-4">
+      <div className="mb-4">
+        <h2 className="display-4">Lista de Edificios</h2>
+        <ul className="list-group">
+          {edificios.map(edificio => (
+            <li key={edificio.id} className="list-group-item d-flex justify-content-between align-items-center">
+              {edificio.direccion}
+              <button className="btn btn-danger" onClick={() => deleteEdificio(edificio.id)}>Eliminar</button>
+            </li>
+          ))}
+        </ul>
+      </div>
+    
+      <div className="mb-3">
+        <h2 className="display-5">Agregar Edificio</h2>
+        <ul className="list-group">
+          <li className="list-group-item">
+            <input
+              className="form-control"
+              type="text"
+              placeholder="Dirección"
+              value={newDireccion}
+              onChange={(e) => setNewDireccion(e.target.value)}
+            />
+            <button className="btn btn-primary mt-3" onClick={saveEdificio}>Guardar Edificio</button>
           </li>
-        ))}
-      </ul>
-    </div>
+        </ul>
+      </div>
+  </section>
+  
   );
 };
 

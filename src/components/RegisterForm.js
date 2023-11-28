@@ -26,7 +26,7 @@ const RegistrationForm = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:8080/registro', formData);
+      const response = await axios.post('http://localhost:8080/sistema/registro', formData);
       setMessage(`Registro exitoso! Token: ${response.data}`);
     } catch (error) {
       setMessage('Error: Usuario existente');
@@ -72,9 +72,10 @@ const RegistrationForm = () => {
             Tipo de Usuario:
           </label>
           <select className="form-select" name="tipoUsuario" value={formData.tipoUsuario} onChange={handleChange}>
-              <option value="ADMIN">Administrador</option>
+              <option disabled preselected value="0">Elegir opcion</option>
               <option value="DUENIO">Dueño</option>
               <option value="INQUILINO">Inquilino</option>
+              <option value="ADMINISTRADOR">Administrador</option>
             </select>
         </div >
         <div className="d-grid gap-2 mb-3">

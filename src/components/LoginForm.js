@@ -13,26 +13,40 @@ const LoginForm = () => {
   const handleLogin = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post('http://localhost:8080/login', {
+      const response = await axios.post('http://localhost:8080/sistema/login', {
         nombreUsuario: username,
         contrasenia: password,
       });
-      
-
-      setMessage(`Bienvenido, ${username}!`);
-      setIsLoggedIn(true);
+  
+      if (response.status === 200) {
+        const userType = response.data;
+  
+        setMessage(`Bienvenido, ${username}!`);
+        setIsLoggedIn(true);
+  
+        if (userType === 'ADMINISTRADOR') {
+          setMessage('Bienvenido, Administrador!');
+        } else if (userType === 'DUENIO') {
+          setMessage('Bienvenido, Dueño!');
+        } else if (userType === 'INQUILINO') {
+          setMessage('Bienvenido, Inquilino!');
+        } else {
+          setMessage('No se encontró el tipo de usuario');
+        }
+      }
     } catch (error) {
       setMessage('Usuario Inexistente');
     }
   };
+  
 
   
 
   return (
-    <section class="container">
+    <section className="container">
         {!isLoggedIn && (
         <form id="login-form" onSubmit={handleLogin}>
-          <h2>Inicio de Sesión</h2>
+          <h2 className="form-label">Inicio de Sesión</h2>
           <div className="mb-3">
             <label htmlFor="nombreUsuario" className="form-label">
               Nombre de Usuario:
