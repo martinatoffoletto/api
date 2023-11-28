@@ -4,7 +4,7 @@ import axios from 'axios';
 const Reclamos = () => {
   const [reclamos, setReclamos] = useState([]);
   const [newReclamo, setNewReclamo] = useState({
-    unidad:3,
+    unidad:12,
     descripcion:"reclamo agua corriente",
     estado:"ABIERTO",
     usuario:1
@@ -57,15 +57,15 @@ const Reclamos = () => {
     
   };
 
-  const deleteReclamo = async (id) => {
-    try {
+  const deleteReclamo =  (id) => {
+    axios.delete(`http://localhost:8080/sistema/reclamos/${id}`)
+     .then(()=> setReclamos(reclamos.filter(reclamo => reclamo.id !== id)))
+     .catch(error => console.error('Error deleting unit:', error));
+
       
-      await axios.delete(`http://localhost:8080/sistema/reclamos/${id}`);
-      // Update the state by removing the deleted reclamo
-      setReclamos(reclamos.filter((reclamo) => reclamo.id !== id));
-    } catch (error) {
-      console.error('Error deleting reclamo:', error);
-    }
+    
+    
+    
   };
 
   return (
