@@ -3,12 +3,12 @@ import axios from 'axios';
 import SwitchAdmin from './SwitchAdmin';
 
 
+
 const LoginForm = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -19,28 +19,16 @@ const LoginForm = () => {
       });
   
       if (response.status === 200) {
-        const userType = response.data;
-  
-        setMessage(`Bienvenido, ${username}!`);
         setIsLoggedIn(true);
-  
-        if (userType === 'ADMINISTRADOR') {
-          setMessage('Bienvenido, Administrador!');
-        } else if (userType === 'DUENIO') {
-          setMessage('Bienvenido, Dueño!');
-        } else if (userType === 'INQUILINO') {
-          setMessage('Bienvenido, Inquilino!');
-        } else {
-          setMessage('No se encontró el tipo de usuario');
-        }
       }
     } catch (error) {
       setMessage('Usuario Inexistente');
     }
   };
-  
-
-  
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    setMessage('');
+  };
 
   return (
     <section className="container">
@@ -84,7 +72,23 @@ const LoginForm = () => {
         </form>
       )}
       
-      {isLoggedIn && <SwitchAdmin />}
+      {isLoggedIn && (
+        <div>
+          <div className="d-grid gap-2 mb-3">
+            <button
+              type="button "
+              className="btn btn-danger"
+              onClick={handleLogout}
+            >
+              Cerrar Sesión
+            </button>
+          </div>
+          <br/>
+          <SwitchAdmin />
+          
+        </div>
+      )}
+
     </section>
   );
 };

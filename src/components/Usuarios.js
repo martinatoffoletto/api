@@ -2,16 +2,41 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const Usuarios = () => {
+  const [usuarios, setUsuarios] = useState([]);
   const [formData, setFormData] = useState({
-    Nombre: '',
+    nombre: '',
     apellido: '',
     dni: '',
     nombreUsuario: '',
     contrasenia: '',
     tipoUsuario: ''
   });
+  
 
   const [message, setMessage] = useState('');
+  useEffect(() => {
+    // Fetch the list of users when the component mounts
+    fetchUsuarios();
+  }, []);
+
+  const fetchUsuarios = async () => {
+    try {
+      const response = await axios.get('http://localhost:8080/sistema/usuarios');
+      setUsuarios(response.data);
+    } catch (error) {
+      console.error('Error fetching users:', error);
+    }
+  };
+
+  const eliminarUsuario = async (id) => {
+    try {
+      await axios.delete(`http://localhost:8080/sistema/usuarios/${id}`);
+      // Update the user list after successful deletion
+      fetchUsuarios();
+    } catch (error) {
+      console.error('Error deleting user:', error);
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -34,6 +59,17 @@ const Usuarios = () => {
 
   return (
     <section class="container">
+      <div className="mb-4">
+        <h2 className="display-4">Lista de Usuarios</h2>
+        <ul className="list-group">
+          {usuarios.map((usuario) => (
+            <li key={usuario.id} className="list-group-item d-flex justify-content-between align-items-center">
+              {usuario.nombre}
+              <button className="btn btn-danger" onClick={() => eliminarUsuario(usuario.id)}>Eliminar</button>
+            </li>
+          ))}
+        </ul>
+      </div>
       <h2 className="display-5">Agregar Usuario</h2>
       <form id="register-form" onSubmit={handleSubmit}>
         <div className="mb-3">
@@ -62,7 +98,7 @@ const Usuarios = () => {
             <option disabled preselected value="0">Elegir opción</option>
             <option value="DUENIO">Dueño</option>
             <option value="INQUILINO">Inquilino</option>
-            <option value="ADMINISTRADOR">Administrador</option>
+            <option value="ADMINISTRADOR">Administrador</option> 
           </select>
         </div>
         <div className="d-grid gap-2 mb-3">

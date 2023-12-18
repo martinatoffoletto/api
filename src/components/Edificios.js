@@ -52,7 +52,7 @@ const Edificios = () => {
   return (
     <section className="container mt-4">
       <div className="mb-4">
-        <h2 className="display-4">Lista de Edificios</h2>
+        <h2 className="display-4">Edificios</h2>
         <ul className="list-group">
           {edificios.map(edificio => (
             <li key={edificio.id} className="list-group-item d-flex justify-content-between align-items-center">
@@ -81,6 +81,7 @@ const Edificios = () => {
   </section>
   
   );
+  
 };
 
 export default Edificios;

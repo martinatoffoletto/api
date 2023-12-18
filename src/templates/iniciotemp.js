@@ -1,11 +1,11 @@
 import React from "react";
-import SwitchButton from '../components/Switch';
+import LoginForm from "../components/LoginForm";
 
 const InicioTemplate = ()=> {
     return (
       <>
         <div>
-          <SwitchButton/>
+          <LoginForm/>
         </div>
 
       </>
