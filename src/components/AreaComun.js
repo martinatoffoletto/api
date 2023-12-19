@@ -9,11 +9,22 @@ const AreasComunes = () => {
     descripcion: '',
     edificio_id: '',
   });
+  const [edificios, setEdificios] = useState([]);
 
   useEffect(() => {
     // Fetch areas comunes when the component mounts
     fetchAreasComunes();
+    fetchEdificios();
   }, []);
+
+  const fetchEdificios = async () => {
+    try {
+      const response = await axios.get('http://localhost:8080/sistema/edificiosTodos');
+      setEdificios(response.data);
+    } catch (error) {
+      console.error('Error fetching edificios:', error);
+    }
+  };
 
   const fetchAreasComunes = async () => {
     try {
@@ -83,12 +94,18 @@ const AreasComunes = () => {
               onChange={(e) => setNuevaAreaComun({ ...nuevaAreaComun, descripcion: e.target.value })}
             />
             <label>Edificio:</label>
-            <input
+            <select
               className="form-control"
-              type="text"
               value={nuevaAreaComun.edificio}
               onChange={(e) => setNuevaAreaComun({ ...nuevaAreaComun, edificio: e.target.value })}
-            />
+            >
+              <option value="">Seleccionar Edificio</option>
+              {edificios.map((edificio) => (
+                <option key={edificio.id} value={edificio.id}>
+                  {edificio.direccion}
+                </option>
+              ))}
+            </select>
             <button className="btn btn-primary mt-3" onClick={guardarAreaComun}>Guardar Área Común</button>
           </li>
         </ul>

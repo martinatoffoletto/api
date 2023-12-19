@@ -1,12 +1,11 @@
 import React from "react";
-import GuardarAreaComunComponent from "../components/saveAC";
-import AreasComunesComponent from "../components/showAC"
+import Reclamo from "../components/Reclamos";
 
 const ClienteTemplate = ()=> {
     return (
       <div>
-          <GuardarAreaComunComponent/>
-          <AreasComunesComponent/>
+          <Reclamo/>
+
 
       </div>
       

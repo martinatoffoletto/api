@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import SwitchAdmin from './SwitchAdmin';
+import ClienteTemplate from '../templates/clientetemp'
 
 
 
@@ -9,6 +10,7 @@ const LoginForm = () => {
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userData, setUserData] = useState(null);
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -19,7 +21,9 @@ const LoginForm = () => {
       });
   
       if (response.status === 200) {
+        const userResponse = await axios.get(`http://localhost:8080/sistema/usuarios/nombre/${username}`);
         setIsLoggedIn(true);
+        setUserData(userResponse.data);  
       }
     } catch (error) {
       setMessage('Usuario Inexistente');
@@ -28,6 +32,7 @@ const LoginForm = () => {
   const handleLogout = () => {
     setIsLoggedIn(false);
     setMessage('');
+    setUserData(null);
   };
 
   return (
@@ -84,7 +89,19 @@ const LoginForm = () => {
             </button>
           </div>
           <br/>
-          <SwitchAdmin />
+          {userData && (
+            <div>
+              <h3>Tipo Usuario</h3>
+              <p>{userData.tipo_usuario}</p>
+              {/* Conditionally render components based on user type */}
+              {userData.tipo_usuario === 'ADMINISTRADOR' ? (
+                <SwitchAdmin />
+              ) : (
+                <ClienteTemplate />
+              )}
+            </div>
+          )}
+          
           
         </div>
       )}

@@ -9,6 +9,7 @@ const Unidades = () => {
   const [inquilinoIdToAdd, setInquilinoIdToAdd] = useState("");
   const [unitIdToAddDuenio, setUnitIdToAddDuenio] = useState("");
   const [duenioIdToAdd, setDuenioIdToAdd] = useState("");
+  const [edificios, setEdificios] = useState([]);
   const [newUnidad, setNewUnidad] = useState({
     piso: "",
     numeroUnidad: "",
@@ -19,11 +20,21 @@ const Unidades = () => {
   });
 
   useEffect(() => {
+    fetchEdificios();
     axios
       .get("http://localhost:8080/sistema/unidades")
       .then((response) => setUnidades(response.data))
       .catch((error) => console.error("Error fetching units:", error));
   }, []);
+
+  const fetchEdificios = async () => {
+    try {
+      const response = await axios.get('http://localhost:8080/sistema/edificiosTodos');
+      setEdificios(response.data);
+    } catch (error) {
+      console.error('Error fetching edificios:', error);
+    }
+  };
 
   const deleteUnidad = (id) => {
     axios
@@ -81,7 +92,7 @@ const Unidades = () => {
               key={unidad.id}
               className="list-group-item d-flex justify-content-between align-items-center"
             >
-              {`Piso: ${unidad.piso}, Unidad: ${unidad.numeroUnidad} - ${
+              {`Edificio: ${unidad.edificio.direccion}, ID unidad: ${unidad.id}, Piso: ${unidad.piso}, Unidad: ${unidad.numeroUnidad} - ${
                 unidad.habitada ? "Habitada" : "No habitada"
               }, ${unidad.alquilada ? "Alquilada" : "No alquilada"}`}
               <button
@@ -160,16 +171,19 @@ const Unidades = () => {
               <label htmlFor="edif" className="form-label">
                 Edificio ID
               </label>
-              <input
-                type="text"
-                className="form-control"
-                id="edif"
-                value={newUnidad.edificio}
-                onChange={(e) =>
-                  setNewUnidad({ ...newUnidad, edificio: e.target.value })
-                }
-                required
-              />
+              <select
+              className="form-control"
+              value={setNewUnidad.edificio}
+              onChange={(e) => setNewUnidad({ ...newUnidad, edificio: e.target.value })}
+               >
+              <option value="">Seleccionar Edificio</option>
+              {edificios.map((edificio) => (
+                <option key={edificio.id} value={edificio.id}>
+                  {edificio.direccion}
+                </option>
+              ))}
+            </select>
+              
               <button
                 type="submit"
                 className="btn btn-primary mt-3"
